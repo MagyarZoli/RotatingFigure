@@ -19,7 +19,7 @@ implements ActionListener{
     private int width;
     private int height;
     private double alfa = 0;
-    private double theta = 60;
+    private double theta = 0;
 
     TestPanel(
         int x,
@@ -63,7 +63,8 @@ implements ActionListener{
         super.paintComponent(g);
         RotatingFigure rf = new RotatingFigure((Graphics2D) g, x, y, width, height, alfa);
         rf.setDrawGuideLines(true);
+        rf.setTheta(theta);
         rf.setColor(Color.BLUE);
-        rf.cube();
+        rf.tetrahedron();
     }
 }

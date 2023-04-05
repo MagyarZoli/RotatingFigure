@@ -95,14 +95,14 @@ public class RotatingFigure{
         double[] ypoints = new double[]{circle1a.getyPoint()+y, circle1b.getyPoint()+y, circle2a.getyPoint()+y, circle2b.getyPoint()+y};
         g2d.rotate(Math.toRadians(theta), (width/2)+x, (height/2)+y);
         if(drawGL){
-            drawGuideLines(xpoints, ypoints);
+            drawCubeGuideLines(xpoints, ypoints);
         }
         g2d.setColor(color);
         drawCube(widthc1, widthc2, xpoints, ypoints);
         stopOverflow();
     }
 
-    private void drawGuideLines(
+    private void drawCubeGuideLines(
         double[] xpoints,
         double[] ypoints
     ){
@@ -144,6 +144,57 @@ public class RotatingFigure{
         g2d.drawPolygon(new int[]{Hx,Ex,Cx,Fx}, new int[]{Hy,Ey,Cy,Fy}, 4);
         g2d.drawPolygon(new int[]{Hx,Ex,Bx,Gx}, new int[]{Hy,Ey,By,Gy}, 4);
         g2d.drawPolygon(new int[]{Hx,Fx,Dx,Gx}, new int[]{Hy,Fy,Dy,Gy}, 4);
+    }
+
+    /**
+     * you tetrahedron a cube suspended by one corner
+     * parameters must be specified in the RotatingFigure class.
+     */
+    public void tetrahedron(){
+        double beta =20;
+        CircleIntersectionPoint circle1a = new CircleIntersectionPoint(width, height, beta, xOrigo, yOrigo);
+        CircleIntersectionPoint circle1b = new CircleIntersectionPoint(width, height, (180-beta), xOrigo, yOrigo);
+        int widthc1 = (int) (circle1a.getxPoint()-circle1b.getxPoint());
+        double[] xpoints = new double[]{circle1a.getxPoint()+x, circle1b.getxPoint()+x};
+        double[] ypoints = new double[]{circle1a.getyPoint()+y, circle1b.getyPoint()+y};
+        g2d.rotate(Math.toRadians(theta), (width/2)+x, (height/2)+y);
+        if(drawGL){
+            drawTetrahedronGuideLines(xpoints, ypoints);
+        }
+        g2d.setColor(color);
+        drawTetrahedron(widthc1, xpoints, ypoints);
+        stopOverflow();
+    }
+
+    private void drawTetrahedronGuideLines(
+        double[] xpoints,
+        double[] ypoints
+    ){
+        g2d.drawOval(x, y, width, height);
+        g2d.drawLine((int) xpoints[1], (int) ypoints[1], (int) xpoints[0], (int) ypoints[0]);
+        g2d.drawLine((int) (width/2)+x, 0+y, (int) (width/2)+x, (int) ypoints[0]);
+        g2d.drawOval((int) xpoints[1], (int) (ypoints[1]-(height/12)), (int) (xpoints[0]-xpoints[1]), (int) (height/6));
+    }
+
+    private void drawTetrahedron(
+        int widthc1,
+        double[] xpoints,
+        double[] ypoints
+    ){
+        int h6 = (height/6);
+        int w2 = (width/2)+x;
+        Ax = w2;
+        Ay = 0+y;
+        Bx = (int) (new CircleIntersectionPoint(widthc1, h6, alfa, w2, ypoints[0]).getxPoint());
+        By = (int) (new CircleIntersectionPoint(widthc1, h6, alfa, w2, ypoints[0]).getyPoint());
+        Cx = (int) (new CircleIntersectionPoint(widthc1, h6, alfa+(360/3), w2, ypoints[0]).getxPoint());
+        Cy = (int) (new CircleIntersectionPoint(widthc1, h6, alfa+(360/3), w2, ypoints[0]).getyPoint());
+        Dx = (int) (new CircleIntersectionPoint(widthc1, h6, alfa+(2*360/3), w2, ypoints[0]).getxPoint());
+        Dy = (int) (new CircleIntersectionPoint(widthc1, h6, alfa+(2*360/3), w2, ypoints[0]).getyPoint());
+        g2d.drawPolygon(new int[]{Ax,Bx,Cx}, new int[]{Ay,By,Cy}, 3);
+        g2d.drawPolygon(new int[]{Ax,Bx,Dx}, new int[]{Ay,By,Dy}, 3);
+        g2d.drawPolygon(new int[]{Ax,Cx,Dx}, new int[]{Ay,Cy,Dy}, 3);
+        g2d.drawPolygon(new int[]{Bx,Cx,Dx}, new int[]{By,Cy,Dy}, 3);
     }
 
     private void stopOverflow(){

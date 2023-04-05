@@ -16,6 +16,18 @@ for calculations, it is possible to request and rewrite values with an external 
  - [CircleIntersectionPoint](https://github.com/MagyarZoli/CircleIntersectionPoint)
 
 ## Example
+to draw a cube, declare class, call initialization method:
+```java
+    @Override
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        RotatingFigure rf = new RotatingFigure((Graphics2D) g, x, y, width, height, alfa);
+        rf.setDrawGuideLines(true);
+        rf.setColor(Color.BLUE);
+        rf.cube();
+    }
+```
+
 Detail of drawing a cube shape:
 ```java
     public void cube(){
